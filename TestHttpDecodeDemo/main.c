@@ -76,7 +76,7 @@ int testHttpDecode(char* pData, int dataLen, char* pDecodeData)
         
         int dataIndex = 0;
         char ch = 0;
-        for (dataIndex = startIndex; dataIndex < endIndex; dataIndex++)
+        for (dataIndex = startIndex + 1; dataIndex < endIndex; dataIndex++)
         {
             ch = pData[dataIndex];
             if (ch != '%')
@@ -87,8 +87,9 @@ int testHttpDecode(char* pData, int dataLen, char* pDecodeData)
             }
             pDecodeData[decodeDataIndex] = hexToChar(pData+dataIndex);
             decodeDataIndex++;
-            dataIndex+=2;
+            //dataIndex+=2;
         }
+        pDecodeData[decodeDataIndex] = '\0';
     }
     
     return TRUE;
