@@ -10,46 +10,39 @@
 #include <string.h>
 #include "CommonHeader.h"
 
+char asciCodeToChar(char *pAsciCode)
+{
+    if (NULL == pAsciCode) return 0;
+    
+    char charCode;
+    char asciCode;
+    asciCode = *pAsciCode;
+    
+    if (asciCode >= '0' && asciCode <= '9')
+    {
+        charCode = asciCode - '0';
+    }
+    else if (asciCode >= 'A' && asciCode <= 'F')
+    {
+        charCode = asciCode - 'A' + 10;
+    }
+    else if (asciCode >= 'a' && asciCode <= 'f')
+    {
+        charCode = asciCode - 'a' + 10;
+    }
+    else
+    {
+        return 0;
+    }
+    return charCode;
+}
+
 char hexToChar(char *hex)
 {
     char c1,c2;
-    char c = *hex;
-    
-    if (c >= '0' && c <= '9')
-    {
-        c1 = c - '0';
-    }
-    else if (c >= 'A' && c <= 'F')
-    {
-        c1 = c - 'A' + 10;
-    }
-    else if (c >= 'a' && c <= 'f')
-    {
-        c1 = c - 'a' + 10;
-    }
-    else
-    {
-        return 0;
-    }
-    
+    c1 = asciCodeToChar(hex);
     hex++;
-    c = *hex;
-    if (c >= '0' && c <= '9')
-    {
-        c2 = c - '0';
-    }
-    else if (c >= 'A' && c <= 'F')
-    {
-        c2 = c - 'A' + 10;
-    }
-    else if (c >= 'a' && c <= 'f')
-    {
-        c2 = c - 'a' + 10;
-    }
-    else
-    {
-        return 0;
-    }
+    c2 = asciCodeToChar(hex);
     
     return (char)(((unsigned char)c1 << 4)+c2);
 }
@@ -79,10 +72,10 @@ int testHttpDecode(char* pData, int dataLen, char* pDecodeData, int *decodeDataL
         char tempChar[] = {0, 0, 0};
         int tempCharIndex = 0;
         int count = 0;
-        for (dataIndex = startIndex; dataIndex <= endIndex; dataIndex++)
+        for (dataIndex = startIndex; dataIndex < endIndex; dataIndex++)
         {
             ch = pData[dataIndex];
-            printf("dataIndex = %i.\n", dataIndex);
+            //printf("dataIndex = %i.\n", dataIndex);
             if (ch == '%')
             {
                 count = 0;
