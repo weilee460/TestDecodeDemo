@@ -76,24 +76,32 @@ int testHttpDecode(char* pData, int dataLen, char* pDecodeData, int *decodeDataL
         
         int dataIndex = 0;
         char ch = 0;
-        char tempChar[] = {0, 0};
+        char tempChar[] = {0, 0, 0};
         int tempCharIndex = 0;
-        for (dataIndex = startIndex + 1; dataIndex < endIndex; dataIndex++)
+        int count = 0;
+        for (dataIndex = startIndex; dataIndex <= endIndex; dataIndex++)
         {
             ch = pData[dataIndex];
             printf("dataIndex = %i.\n", dataIndex);
-            if (ch != '%')
+            if (ch == '%')
+            {
+                count = 0;
+                continue;
+            }
+            if (ch != '%' && count < 2)
             {
                 tempChar[tempCharIndex] = ch;
                 tempCharIndex++;
-                continue;
+                count += 1;
             }
-            else{
+            if (count == 2)
+            {
                 pDecodeData[decodeDataIndex] = hexToChar(tempChar);
                 tempCharIndex = 0;
                 decodeDataIndex++;
                 (*decodeDataLen)++;
             }
+            
         }
         pDecodeData[decodeDataIndex] = '\0';
     }
@@ -114,7 +122,7 @@ int main()
 */
 
 int main(int argc, const char * argv[]) {
-    /*
+   
     char pData[] = {0x47, 0x45, 0x54, 0x20, 0x2f, 0x73, 0x3f, 0x69, 0x65, 0x3d,
                     0x75, 0x74, 0x66, 0x2d, 0x38, 0x26, 0x66, 0x3d, 0x38, 0x26,
                     0x72, 0x73, 0x76, 0x5f, 0x62, 0x70, 0x3d, 0x31, 0x26, 0x72,
@@ -140,10 +148,10 @@ int main(int argc, const char * argv[]) {
                     0x39, 0x34, 0x25, 0x38, 0x64, 0x25, 0x31, 0x35, 0x25, 0x32,
                     0x61, 0x25, 0x61, 0x32, 0x25, 0x64, 0x38, 0x25, 0x30, 0x61,
                     0x25, 0x32, 0x64, 0x25, 0x62, 0x63, 0x26, 0x72, 0x6e, 0x3d};
-     */
+    
   
 
-    char pData[] = {0x47, 0x45, 0x54, 0x20, 0x25, 0x62, 0x63, 0x26, 0x72, 0x6e, 0x3d};
+    //char pData[] = {0x47, 0x45, 0x54, 0x20, 0x25, 0x62, 0x63, 0x26, 0x72, 0x6e, 0x3d};
 
     
     unsigned long dataLen = strlen(pData);
